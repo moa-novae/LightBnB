@@ -1,21 +1,29 @@
+DROP TABLE IF EXISTS users CASCADE;
+DROP TABLE IF EXISTS properties CASCADE;
+DROP TABLE IF EXISTS rates;
+DROP TABLE IF EXISTS reservations CASCADE;
+DROP TABLE IF EXISTS property_reviews CASCADE;
+DROP TABLE IF EXISTS guest_reviews;
+
+
 CREATE TABLE users (
-  id SERIAL PRIME KEY NOT NULL, 
+  id SERIAL PRIMARY KEY NOT NULL, 
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   password VARCHAR(255) NOT NULL
-)
+);
 
 CREATE TABLE properties (
-  id SERIAL PRIME KEY,
-  ownder_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  id SERIAL PRIMARY KEY,
+  owner_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
   
   title VARCHAR(255) NOT NULL,
   description TEXT,
-  thumbnail_photo_url VARHAR(255) NOT NULL,
+  thumbnail_photo_url VARCHAR(255) NOT NULL,
   cover_photo_url VARCHAR(255) NOT NULL,
   cost_per_night SMALLINT NOT NULL DEFAULT 0,
   parking_spaces SMALLINT NOT NULL DEFAULT 0,
-  umber_of_bathrooms SMALLINT NOT NULL DEFAULT 0,
+  number_of_bathrooms SMALLINT NOT NULL DEFAULT 0,
   number_of_bedrooms SMALLINT NOT NULL DEFAULT 0,
   
   country VARCHAR(255) NOT NULL,
@@ -25,7 +33,7 @@ CREATE TABLE properties (
   post_code VARCHAR(255) NOT NULL,
   
   active BOOLEAN NOT NULL DEFAULT TRUE
-)
+);
 
 CREATE TABLE rates (
   id SERIAL PRIMARY KEY,
@@ -33,7 +41,7 @@ CREATE TABLE rates (
   end_date DATE,
   cost_per_night SMALLINT,
   property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE reservations (
   id SERIAL PRIMARY KEY,
@@ -41,7 +49,7 @@ CREATE TABLE reservations (
   end_date DATE NOT NULL,
   property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE,
   guest_id INTEGER REFERENCES users(id) ON DELETE CASCADE
-)
+);
 
 CREATE TABLE guest_reviews (
   id SERIAL PRIMARY KEY,
@@ -50,7 +58,7 @@ CREATE TABLE guest_reviews (
   reservation_id INTEGER REFERENCES reservations(id) ON DELETE CASCADE,
   rating SMALLINT NOT NULL DEFAULT 0,
   message TEXT
-)
+);
 
 CREATE TABLE property_reviews (
   id SERIAL PRIMARY KEY NOT NULL,
@@ -59,4 +67,4 @@ CREATE TABLE property_reviews (
   property_id INTEGER REFERENCES properties(id) ON DELETE CASCADE,
   rating SMALLINT NOT NULL DEFAULT 0,
   message TEXT
-)
+);
